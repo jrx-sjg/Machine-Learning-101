@@ -5,3 +5,4 @@ scikit-learn
 psutil
 ipykernel
 pip
+statsmodels
