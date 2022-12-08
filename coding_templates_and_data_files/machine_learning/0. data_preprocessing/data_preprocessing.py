@@ -17,9 +17,9 @@ y = dataset.iloc[:, 3].values
 #-------------------------------------------------
 
 # Taking care of missing data
-from sklearn.preprocessing import Imputer
+from sklearn.impute import SimpleImputer
 
-imputer = Imputer(missing_values="NaN", strategy="mean", axis=0)
+imputer = SimpleImputer(missing_values=np.nan, strategy="mean")
 # We grab only the columns with the missing data
 imputer = imputer.fit(X[:, 1:3])
 
@@ -28,31 +28,29 @@ X[:, 1:3] = imputer.transform(X[:, 1:3])
 
 #-------------------------------------------------
 
-# Encoding categorical data
+# Import library and classes
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.compose import ColumnTransformer
 
 labelEncoder_X = LabelEncoder()
 
-# Change Country Values in first column to an array
-# of 'label numbers' & adds them to the X
+#Change Country Values in first column to an array<br> of 'label numbers' & adds them to the X
 X[:, 0] = labelEncoder_X.fit_transform(X[:, 0])
 
 # Splits the Country column into 3 separate columns
-oneHotEncoder = OneHotEncoder(categorical_features=[0])
-
-X = oneHotEncoder.fit_transform(X).toarray()
+ct = ColumnTransformer([("Country", OneHotEncoder(), [0])], remainder = 'passthrough')
+X = ct.fit_transform(X)
 
 # Change the Purchase column using LabelEncoder
 labelEncoder_y = LabelEncoder()
-
 y = labelEncoder_y.fit_transform(y)
 
 #-------------------------------------------------
 
 # Spliting the dataset into the Training set & Test set
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 
-# Make it so that the Test set is 20% and Training set is 80%
+#Make it so that the Test set is 20% and Training set is 80%
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 #-------------------------------------------------
