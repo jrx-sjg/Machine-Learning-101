@@ -18,8 +18,7 @@ regressor = DecisionTreeRegressor(random_state=0)
 regressor.fit(X, y)
 
 # Predicting a new result
-y_pred = regressor.predict(6.5)
-
+y_pred = regressor.predict([[6.5]])
 
 # Visualising the results
 

@@ -40,7 +40,7 @@ plt.show()
 
 # Visualising the Polynomial Regression results
 
-# Add curve to graph
+# Add curve to graph             
 X_grid = np.arange(min(X), max(X), 0.1)
 X_grid = X_grid.reshape(len(X_grid), 1)
 
@@ -54,7 +54,7 @@ plt.show()
 
 
 # Predicting a new result with Linear Regression
-lin_reg.predict(6.5)
+lin_reg.predict(np.array([6.5]).reshape(1,1))
 
 # Predicting a new result with Polynomial Regression
-lin_reg2.predict(poly_reg.fit_transform(6.5))
+lin_reg2.predict(poly_reg.fit_transform([[6.5]]))
