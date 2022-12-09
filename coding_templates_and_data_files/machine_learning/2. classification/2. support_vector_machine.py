@@ -25,17 +25,25 @@ X_test = sc_X.transform(X_test)
 
 # Fitting SVM to the Training set
 from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+
 classifier = SVC(kernel='linear', random_state=0)
 classifier.fit(X_train, y_train)
 
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
+print(y_pred)
 
+print("accuracy: {}".format(accuracy_score(y_test, y_pred)))
+print("classification: {}".format(classification_report(y_test, y_pred)))
 
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
+
 cm = confusion_matrix(y_test, y_pred)
+print("confusion: {}".format(cm))
 
 
 # Visualising the Training set results
@@ -49,7 +57,7 @@ plt.xlim(X1.min(), X1.max())
 plt.ylim(X2.min(), X2.max())
 for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-                c = ListedColormap(('red', 'green'))(i), label = j, edgecolor='black')
+                c = ['red', 'green'][i], label = j, edgecolor='black')
 plt.title('SVM (Training Set)')
 plt.xlabel('Age')
 plt.ylabel('Estimated Salary')
@@ -68,7 +76,7 @@ plt.xlim(X1.min(), X1.max())
 plt.ylim(X2.min(), X2.max())
 for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-                c = ListedColormap(('red', 'green'))(i), label = j, edgecolor='black')
+                c = ['red', 'green'][i], label = j, edgecolor='black')
 plt.title('SVM (Test Set)')
 plt.xlabel('Age')
 plt.ylabel('Estimated Salary')
