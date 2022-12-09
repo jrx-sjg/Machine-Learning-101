@@ -6,3 +6,5 @@ psutil
 ipykernel
 pip
 statsmodels
+xgboost
+graphviz

@@ -3,6 +3,7 @@
 # Importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from xgboost import plot_tree
 import pandas as pd
 
 # Importing the dataset
@@ -12,14 +13,18 @@ y = dataset.iloc[:, -1].values
 
 # Encoding categorical data
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+
 labelEncoder_X1 = LabelEncoder()
 labelEncoder_X2 = LabelEncoder()
 X[:, 1] = labelEncoder_X1.fit_transform(X[:, 1])
 X[:, 2] = labelEncoder_X2.fit_transform(X[:, 2])
 
-oneHotEncoder = OneHotEncoder(categorical_features=[1])
-X = oneHotEncoder.fit_transform(X).toarray()
-X = X[:, 1:]
+ct = ColumnTransformer(
+    [('one_hot_encoder', OneHotEncoder(categories='auto'), [3])],   # The column numbers to be transformed (here is [0] but can be [0, 1, 3])
+    remainder='passthrough'                                         # Leave the rest of the columns untouched
+)
+X = ct.fit_transform(X)
 
 # Spliting the dataset into the Training set & Test set
 from sklearn.model_selection import train_test_split
@@ -42,3 +47,6 @@ from sklearn.model_selection import cross_val_score
 accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)
 accuracies.mean()
 accuracies.std()
+
+plot_tree(classifier)
+plt.show()
